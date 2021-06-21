@@ -62,8 +62,9 @@ header{
     border-right-color: #7B7B7B;
     border-bottom-color: #7B7B7B;
     border-left-color: #ffffff;
-    text-align: center;
-    vertical-align: middle;
+    display: flex;
+    justify-content:center;
+    align-items:center;
 }
 
 .item.close:hover{
@@ -76,22 +77,30 @@ header{
 }
 
 .item.marked{
-    background-color: #C0C0C0;
-    background-color: red;
+    background-image: url(../img/flag.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
     text-align: center;
-    border: none;
+    
 }
 
 .item.bomb{
-    cursor: not-allowed;    
+    cursor: not-allowed;
+    background-image: url(../img/bomb.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .item.open{
-    background-color: #C0C0C0;
-    background-color: black;
+    background-color: hsl(0, 0%, 80%);
     font-size: 80%;
     text-align: center;
     border: none;
     cursor: not-allowed;    
+    box-shadow: 0 0 1px 1px gray;
 }
+
+
 

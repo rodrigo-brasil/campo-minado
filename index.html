@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="PT-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
     <script src="./js/scripts.js" defer></script>
     <title>Campo Minado</title>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="score bg-dark">score</div>
-        <div class="options bg-dark">
-            <button class="inline-block button" id="easy-option">Easy</button>
-            <button class="inline-block button" id="medium-option">Medium</button>
-            <button class="inline-block button" id="hard-option">Hard</button>
-        </div>
-        <div class="timer bg-dark">timer</div>
+      <div id="bombs-left" class="bg-dark"></div>
+      <div class="timer bg-dark">timer</div>
+
+      <div class="options bg-dark">
+        <button class="inline-block button" id="easy-option">Easy</button>
+        <button class="inline-block button" id="medium-option">Medium</button>
+        <button class="inline-block button" id="hard-option">Hard</button>
+      </div>
+      
     </header>
     <div class="containner">
-        <div id="minefield" class="grid">
-
-        </div>
-    </div> <!-- containner -->
-</body>
+      <div id="minefield" class="grid"></div>
+    </div>
+    <!-- containner -->
+  </body>
 </html>
