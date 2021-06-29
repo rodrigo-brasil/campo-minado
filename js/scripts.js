@@ -2,8 +2,10 @@ const EASY = [10, 10, 10];
 const MEDIUM = [16, 16, 40];
 const HARD = [30, 30, 170];
 let board;
-let sartGame;
 let difficulty;
+let currentTime=0;
+let stopWatch; //setInterval
+let isStartedGame = false;
 const states = {
   MARKED: "marked",
   BOMB: "bomb",
@@ -27,6 +29,12 @@ class Camp {
     }
     return this.marked;
   }
+
+  hasGoalAchieved () {
+    let isRevealed = this.open && !this.bomb
+    let isMarked = this.marked && this.bomb
+    return isMarked || isRevealed
+  }
 }
 
 /* reference for grid element */
@@ -39,6 +47,36 @@ const hardBtn = document.getElementById("hard-option");
 
 /* reference for display bombs */
 const bombs_left = document.getElementById("bombs-left");
+const timerElement = document.getElementById("timer");
+
+/* setInterval */
+
+
+function startTimer() {
+  if(isStartedGame) return console.log("não começou")
+  console.log("startandoNovo")
+  stopWatch = setInterval(timer, 1000);
+  isStartedGame = true;
+}
+
+function stopTimer(){
+  clearInterval(stopWatch);
+  currentTime = 0;
+  timerElement.innerHTML = '00:00:00';
+  isStartedGame = false;
+}
+
+function timer(){
+  currentTime++;
+  let min = Math.trunc(currentTime/60);
+  let sec = currentTime % 60;
+  let hours = 0;
+  if (min >= 60){
+    hours = Math.trunc(min/60);
+    min = currentTime % 60;
+  }
+  timerElement.innerHTML =  (hours<10 ? `0${hours}:`: hours )+(min<10 ? `0${min}:`: min )+(sec<10 ? `0${sec}`: sec )
+}
 
 /* functions */
 function renderField(board) {
@@ -143,11 +181,9 @@ function markCamp(camp) {
 function openCamp(camp) {
   if (camp.bomb){
     changeClass(states.BOMB, camp);
-    console.log("bomb")
-    return
+    alert("Perdeu!")
   }
   if (calcAdjBombs(camp) > 0) {
-    //console.log(calcAdjBombs(camp))
     camp.open = true;
     changeClass(states.OPEN, camp);
 }
@@ -157,6 +193,9 @@ if (calcAdjBombs(camp) == 0) {
     getAdjCamps(camp)
       .filter((x) => !x.open && !x.marked)
       .forEach((x) => openCamp(x));
+  }
+  if(isWin()) {
+    alert("Ganhou!")
   }
 }
 
@@ -186,25 +225,26 @@ function getAdjCamps(camp) {
   return adjCamps;
 }
 
-function isWinner(){
+function isWin(){
  let tester = [].concat(...board)
-  return tester.some(x => x.open && x.bomb)
+  return tester.every(x => x.hasGoalAchieved())
 }
 
 function calcBombsLeft(){
-  let tester = [].concat(...board)
+  let tester = board.flat();
   let opens = tester.filter(x => x.open)
   let marked = tester.filter(x => x.marked)
   bombs_left.innerText = difficulty[2] - marked.length
 }
+
 
 function init(gameOptions = EASY) {
   difficulty = gameOptions
   board = createCamps(difficulty);
   mineCamps(difficulty);
   renderField(board);
-  calcBombsLeft(difficulty)
-  console.log(board);
+  calcBombsLeft(difficulty);
+  stopTimer();
 }
 
 /* setting listeners */
@@ -215,11 +255,14 @@ hardBtn.addEventListener("click", () => changeGameMode(HARD));
 document.body.addEventListener("contextmenu", (e) => {
   e.target?.classList?.contains("item") && e.preventDefault();
   e.target?.classList?.contains("item") && markCamp(findCampPosition(e.target));
+  e.target?.classList?.contains("item") && startTimer();
 });
 
 document.body.addEventListener("click", (e) => {
+  e.target?.classList?.contains("close") && startTimer();
   e.target?.classList?.contains("close") && openCamp(findCampPosition(e.target));
 });
+
 
 //initialize
 init();
