@@ -1,81 +1,95 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
-
 :root {
     --bg-dark: brown;
-  }
+}
 
-* , *::before , *::after{
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     background-color: lightgray;
-    height: 100vh;
+    min-height: 100vh;
 }
 
-header{
-    height: 9vh;
-    padding-left: 20%;
-    padding-right: 20%;
+header {
+    width: 100%;
     background-color: #BABABA;
 }
 
-header > .containner-header{
-    width: 1080px;
-    height:100%;
+.containner-header {
+    max-width: 1080px;
+    max-height: 10vh;
+    min-height: 70px;
     margin: 0 auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
 }
 
-.bg-dark{
-    padding: 0.5rem 1rem;
+.bg-dark {
+    flex:0 1 100px;
     background-color: var(--bg-dark);
 }
 
-.inline-block{
-    display: inline-block;
-    margin: 0 0.25rem;
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.button{
+.options {
+    flex: 0 1 auto;
+}
+
+.button {
     padding: 0.25rem 0.5rem;
     border: solid 1px black;
     background-color: white;
+    margin: 0 .5rem;
 }
 
-.containner{
-    width: 1080px;
+.containner {
+    max-width: 1080px;
     margin: 0 auto;
     padding: 1%;
     background-color: lightgray;
-    height: 91vh;
+    min-height: 90vh;
+    display:grid;
+    place-items: center;
 }
 
-.grid{
+.grid {
     display: grid;
     gap: 0.1em;
     width: 100%;
-    height: 100%;
+    justify-content:center;
 }
 
-.item{
+.item {
     background-color: #C0C0C0;
     border: 1.5px solid;
     border-top-color: #ffffff;
     border-right-color: #7B7B7B;
     border-bottom-color: #7B7B7B;
     border-left-color: #ffffff;
+    text-align: center;
     display: flex;
     justify-content:center;
     align-items:center;
 }
+.item::before{
+    content:'';
+    display:block;
+    padding-bottom: 100%;
+}
 
-.item.close:hover{
+.item.close:hover {
     background-color: hsl(0, 0%, 55%);
     border: 1.5px solid;
     border-top-color: #7B7B7B;
@@ -84,37 +98,38 @@ header > .containner-header{
     border-left-color: #7B7B7B;
 }
 
-.item.marked{
-    background-image: url(../img/flag.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: auto;
-    text-align: center;
-    background-size: 50%;
-    
+.item.marked::after {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 400;
+    content: "\1f6a9";
 }
 
-.item.bomb{
+.item.bomb {
     cursor: not-allowed;
-    background-image: url(../img/bomb.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 50%;
 }
 
-.item.open{
+.item.open {
     background-color: hsl(0, 0%, 80%);
-    font-size: 80%;
-    text-align: center;
     border: none;
-    cursor: not-allowed;    
+    cursor: not-allowed;
     box-shadow: 0 0 1px 1px gray;
 }
 
-.timer{
-    font-family: 'Orbitron', sans-serif;
-    font-size:1.3rem
+.item.bomb::after {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 400;
+    content: "\1f4a3";
 }
 
-
-
+.timer {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem
+}

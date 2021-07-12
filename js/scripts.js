@@ -89,7 +89,7 @@ function renderField(board) {
         "x" + i + " " + "y" + j + " item " + getClassFromCamp(board[i][j]);
     }
   }
-  let template_columns = "grid-template-columns: repeat(" + board[0].length + ",1fr);grid-template-rows: repeat(" + board[0].length + ",1fr);";
+  let template_columns = "grid-template-columns: repeat(" + board[0].length + ",minmax(25px, 45px));";
   minefield.setAttribute("style", template_columns);
 }
 
@@ -234,9 +234,8 @@ function calcBombsLeft(){
   let tester = board.flat();
   let opens = tester.filter(x => x.open)
   let marked = tester.filter(x => x.marked)
-  bombs_left.innerText = difficulty[2] - marked.length
+  bombs_left.innerText = `Minas: ${difficulty[2] - marked.length}` 
 }
-
 
 function init(gameOptions = EASY) {
   difficulty = gameOptions
@@ -262,7 +261,6 @@ document.body.addEventListener("click", (e) => {
   e.target?.classList?.contains("close") && startTimer();
   e.target?.classList?.contains("close") && openCamp(findCampPosition(e.target));
 });
-
 
 //initialize
 init();

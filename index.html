@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="PT-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/style.css" />
-    <script src="./js/scripts.js" defer></script>
-    <title>Campo Minado</title>
-  </head>
-  <body>
-    <header>
-      <div class="containner-header">
-        <div id="bombs-left" class="bg-dark"></div>
-        <div id="timer" class="timer bg-dark">timer</div>
-  
-        <div class="options bg-dark">
-          <button class="inline-block button" id="easy-option">Easy</button>
-          <button class="inline-block button" id="medium-option">Medium</button>
-          <button class="inline-block button" id="hard-option">Hard</button>
-        </div>
 
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="./js/scripts.js" defer></script>
+  <title>Campo Minado</title>
+</head>
+
+<body>
+  <header>
+    <div class="containner-header ">
+      <div id="bombs-left" class="bg-dark flex-row"></div>
+      <div id="timer" class="timer bg-dark flex-row">timer</div>
+
+      <div class="options flex-row bg-dark">
+        <button class=" button" id="easy-option">Easy</button>
+        <button class=" button" id="medium-option">Medium</button>
+        <button class=" button" id="hard-option">Hard</button>
       </div>
-      
-    </header>
-    <div class="containner">
-      <div id="minefield" class="grid"></div>
+
     </div>
-    <!-- containner -->
-  </body>
+
+  </header>
+
+  <div class="containner">
+    <div id="minefield" class="grid"></div>
+  </div><!-- containner -->
+
+</body>
+
 </html>
