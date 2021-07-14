@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 :root {
-    --bg-dark: brown;
+    --bg-dark: lightgray;
 }
 
 *, *::before, *::after {
@@ -32,14 +32,53 @@ header {
 }
 
 .bg-dark {
-    flex:0 1 100px;
+    flex: 0 1 100px;
     background-color: var(--bg-dark);
+    padding-left: 20px;
+    padding-right: 20px;
+    position:relative;
+}
+
+.bg-dark::before{
+    content:'';
+    width: 15px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    background-color:#BABABA;
+    border-bottom-right-radius: 100% 40%;
+}
+
+.bg-dark::after{
+    content:'';
+    width: 15px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    background-color:#BABABA;
+    border-bottom-left-radius:  100% 40%;
+}
+
+.small-text {
+    display: block;
+    color: #999;
+    margin-top: 5px;
+    font-size: 0.7em;
+    letter-spacing: 1px;
 }
 
 .flex-row {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -61,7 +100,7 @@ header {
     padding: 1%;
     background-color: lightgray;
     min-height: 90vh;
-    display:grid;
+    display: grid;
     place-items: center;
 }
 
@@ -69,7 +108,7 @@ header {
     display: grid;
     gap: 1.5px;
     width: 100%;
-    justify-content:center;
+    justify-content: center;
 }
 
 .item {
@@ -81,16 +120,17 @@ header {
     border-left-color: #ffffff;
     text-align: center;
     display: flex;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
 }
-.item.y0{
+
+.item.y0 {
     border-left-color: #7B7B7B;
 }
 
-.item::before{
-    content:'';
-    display:block;
+.item::before {
+    content: '';
+    display: block;
     padding-bottom: 100%;
 }
 
