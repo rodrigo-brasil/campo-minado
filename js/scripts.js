@@ -1,11 +1,15 @@
-const EASY = [10, 10, 10];
-const MEDIUM = [16, 16, 40];
-const HARD = [30, 30, 170];
+const EASY = [10, 15, 15];
+const MEDIUM = [15, 17, 40];
+const HARD = [25, 36, 170];
 let board;
 let difficulty;
-let currentTime=0;
+let currentTime = 0;
 let stopWatch; //setInterval
 let isStartedGame = false;
+const height = window.innerHeight
+  || document.documentElement.clientHeight
+  || document.body.clientHeight;
+  
 const states = {
   MARKED: "marked",
   BOMB: "bomb",
@@ -30,7 +34,7 @@ class Camp {
     return this.marked;
   }
 
-  hasGoalAchieved () {
+  hasGoalAchieved() {
     let isRevealed = this.open && !this.bomb
     let isMarked = this.marked && this.bomb
     return isMarked || isRevealed
@@ -38,65 +42,63 @@ class Camp {
 }
 
 /* reference for grid element */
-const minefield = document.getElementById("minefield");
+const minefield = document.querySelector("#minefield");
 
 /* reference for buttons */
-const easyBtn = document.getElementById("easy-option");
-const mediumBtn = document.getElementById("medium-option");
-const hardBtn = document.getElementById("hard-option");
+const easyBtn = document.querySelector("#easy-option");
+const mediumBtn = document.querySelector("#medium-option");
+const hardBtn = document.querySelector("#hard-option");
 
 /* reference for display bombs */
-const bombs_left = document.getElementById("bombs-left");
-const timerElement = document.getElementById("timer");
+const bombs_left = document.querySelector("#bombs-left");
+const timerElement = document.querySelector("#timer");
 
 /* setInterval */
-
-
 function startTimer() {
-  if(isStartedGame) return console.log("não começou")
+  if (isStartedGame) return console.log("não começou")
   console.log("startandoNovo")
   stopWatch = setInterval(timer, 1000);
   isStartedGame = true;
 }
 
-function stopTimer(){
+function stopTimer() {
   clearInterval(stopWatch);
   currentTime = 0;
   timerElement.innerHTML = '00:00:00';
   isStartedGame = false;
 }
 
-function timer(){
+function timer() {
   currentTime++;
-  let min = Math.trunc(currentTime/60);
+  let min = Math.trunc(currentTime / 60);
   let sec = currentTime % 60;
   let hours = 0;
-  if (min >= 60){
-    hours = Math.trunc(min/60);
+  if (min >= 60) {
+    hours = Math.trunc(min / 60);
     min = currentTime % 60;
   }
-  timerElement.innerHTML =  (hours<10 ? `0${hours}:`: hours )+(min<10 ? `0${min}:`: min )+(sec<10 ? `0${sec}`: sec )
+  timerElement.innerHTML = (hours < 10 ? `0${hours}:` : hours) + (min < 10 ? `0${min}:` : min) + (sec < 10 ? `0${sec}` : sec)
 }
 
 /* functions */
 function renderField(board) {
   removeChildElements(minefield);
 
-  for (let i = 0; i < board[0].length; i++) {
+  for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[1].length; j++) {
       let camp = document.createElement("div");
       minefield.appendChild(camp).classList =
         "x" + i + " " + "y" + j + " item " + getClassFromCamp(board[i][j]);
     }
   }
-  let template_columns = "grid-template-columns: repeat(" + board[0].length + ",minmax(25px, 45px));";
+  let template_columns = "grid-template-columns: repeat(" + board[1].length + ",minmax(25px, 45px));";
   minefield.setAttribute("style", template_columns);
 }
 
 function createCamps() {
   let arr = Array.from(Array(difficulty[0]), () => new Array(difficulty[1]));
-  for (let i = 0; i < difficulty[0]; i++) {
-    for (let j = 0; j < difficulty[1]; j++) {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr[1].length; j++) {
       arr[i][j] = new Camp(i, j);
     }
   }
@@ -106,7 +108,7 @@ function createCamps() {
 function mineCamps() {
   let mines = 0;
   while (mines < difficulty[2]) {
-    let randRow = Math.floor(Math.random() * board[0].length);
+    let randRow = Math.floor(Math.random() * board.length);
     let randCol = Math.floor(Math.random() * board[1].length);
     if (!board[randRow][randCol].bomb) {
       board[randRow][randCol].bomb = true;
@@ -126,8 +128,8 @@ function removeChildElements(parent) {
 }
 
 function changeClass(evento, camp) {
-    elements = document.getElementsByClassName("x" + camp.row + " " + "y" + camp.col)
-    element =  elements[0]
+  elements = document.getElementsByClassName("x" + camp.row + " " + "y" + camp.col)
+  element = elements[0]
   switch (evento) {
     case states.MARKED:
       camp.marked == true
@@ -163,13 +165,13 @@ function getClassFromCamp(camp) {
 
 /* game functions */
 function findCampPosition(item) {
-    if(item != undefined){
-        let row = parseInt(item.classList?.item(0).substring(1))
-        let col = parseInt(item.classList?.item(1).substring(1))
-      return board[row][col];
+  if (item != undefined) {
+    let row = parseInt(item.classList?.item(0).substring(1))
+    let col = parseInt(item.classList?.item(1).substring(1))
+    return board[row][col];
 
-    }
-    return console.log("Erro ao encontrar possição do Campo")
+  }
+  return console.log("Erro ao encontrar possição do Campo")
 }
 
 function markCamp(camp) {
@@ -179,28 +181,29 @@ function markCamp(camp) {
 }
 
 function openCamp(camp) {
-  if (camp.bomb){
+  if (camp.bomb) {
     changeClass(states.BOMB, camp);
-    alert("Perdeu!")
+    alert("Perdeu!");
+    return
   }
   if (calcAdjBombs(camp) > 0) {
     camp.open = true;
     changeClass(states.OPEN, camp);
-}
-if (calcAdjBombs(camp) == 0) {
+  }
+  if (calcAdjBombs(camp) == 0) {
     camp.open = true;
     changeClass(states.OPEN, camp);
     getAdjCamps(camp)
       .filter((x) => !x.open && !x.marked)
       .forEach((x) => openCamp(x));
   }
-  if(isWin()) {
+  if (isWin()) {
     alert("Ganhou!")
   }
 }
 
 function abrirtudo() {
-  board.forEach(linha => linha.forEach(camp => camp.open = true))
+  board.forEach(linha => linha.forEach(camp => camp.hasGoalAchieved() || (camp.open = true)))
   renderField(board)
 }
 
@@ -212,7 +215,7 @@ function getAdjCamps(camp) {
   let adjCamps = [];
   let row = camp.row;
   let col = camp.col;
-  let lasRow = board[0].length - 1;
+  let lasRow = board.length - 1;
   let lastCol = board[1].length - 1;
   if (row > 0 && col > 0) adjCamps.push(board[row - 1][col - 1]);
   if (row > 0) adjCamps.push(board[row - 1][col]);
@@ -225,16 +228,16 @@ function getAdjCamps(camp) {
   return adjCamps;
 }
 
-function isWin(){
- let tester = [].concat(...board)
+function isWin() {
+  let tester = [].concat(...board)
   return tester.every(x => x.hasGoalAchieved())
 }
 
-function calcBombsLeft(){
+function calcBombsLeft() {
   let tester = board.flat();
   let opens = tester.filter(x => x.open)
   let marked = tester.filter(x => x.marked)
-  bombs_left.innerText = `Minas: ${difficulty[2] - marked.length}` 
+  bombs_left.innerText = `Minas: ${difficulty[2] - marked.length}`
 }
 
 function init(gameOptions = EASY) {
