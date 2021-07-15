@@ -1,6 +1,6 @@
 const EASY = [10, 15, 15];
 const MEDIUM = [15, 17, 40];
-const HARD = [25, 36, 170];
+const HARD = [25, 36, 160];
 let isStartedGame = false;
 let currentTime = 0;
 let board;
@@ -91,7 +91,7 @@ function renderField(board) {
         "x" + i + " " + "y" + j + " item " + getClassFromCamp(board[i][j]);
     }
   }
-  let template_columns = "grid-template-columns: repeat(" + board[1].length + ",minmax(25px, 45px));";
+  let template_columns = "grid-template-columns: repeat(" + board[1].length + ",minmax(20px, 45px));";
   minefield.setAttribute("style", template_columns);
 }
 

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 :root {
-    --bg-dark: lightgray;
+    --bg-light: hsl(0, 0%, 83%);
+    --bg-dark: hsl(0, 0%, 73%);
 }
 
 *, *::before, *::after {
@@ -11,13 +12,13 @@
 }
 
 body {
-    background-color: lightgray;
+    background-color: var(--bg-light);
     min-height: 100vh;
 }
 
 header {
     width: 100%;
-    background-color: #BABABA;
+    background-color: var(--bg-dark);
 }
 
 .containner-header {
@@ -29,39 +30,41 @@ header {
     flex-direction: row;
     justify-content: space-between;
     align-items: stretch;
+
 }
 
-.bg-dark {
-    flex: 0 1 100px;
-    background-color: var(--bg-dark);
-    padding-left: 20px;
-    padding-right: 20px;
-    position:relative;
-}
-
-.bg-dark::before{
+.containner-header > div::before{
     content:'';
     width: 15px;
     height: 100%;
     position: absolute;
     left: 0;
     background-color:#BABABA;
-    border-bottom-right-radius: 100% 40%;
+    border-bottom-right-radius: 100% 30%;
 }
 
-.bg-dark::after{
+.containner-header > div::after{
     content:'';
     width: 15px;
     height: 100%;
     position: absolute;
     right: 0;
     background-color:#BABABA;
-    border-bottom-left-radius:  100% 40%;
+    border-bottom-left-radius:  100% 30%;
 }
+
+.bg-light {
+    flex: 0 1 150px;
+    background-color: var(--bg-light);
+    padding-left: 20px;
+    padding-right: 20px;
+    position:relative;
+}
+
 
 .small-text {
     display: block;
-    color: #999;
+    color: hsl(0, 0%, 40%);
     margin-top: 5px;
     font-size: 0.7em;
     letter-spacing: 1px;
@@ -72,7 +75,6 @@ header {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 .flex-col {
@@ -88,10 +90,15 @@ header {
 }
 
 .button {
-    padding: 0.25rem 0.5rem;
-    border: solid 1px black;
-    background-color: white;
+    padding: 1rem 1.5rem;
+    border: solid 1.5px white;
+    border-radius: 0.25rem;
+    background-color: var(--bg-dark);
     margin: 0 .5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: hsl(0, 0%, 40%);
+    letter-spacing:1px;
 }
 
 .containner {
