@@ -2,6 +2,7 @@
 :root {
     --bg-light: hsl(0, 0%, 83%);
     --bg-dark: hsl(0, 0%, 73%);
+    --ideal-viewport-width: 1000;
 }
 
 *, *::before, *::after {
@@ -11,6 +12,10 @@
     -webkit-font-smoothing: antialiased;
 }
 
+html, body {
+    font-size: calc(16 * (clamp(420px, 100vw, 1500px) / var(--ideal-viewport-width)))
+}
+
 body {
     background-color: var(--bg-light);
     min-height: 100vh;
@@ -18,39 +23,38 @@ body {
 
 header {
     width: 100%;
+    min-width: 420px;
     background-color: var(--bg-dark);
 }
 
 .containner-header {
     max-width: 1080px;
     max-height: 10vh;
-    min-height: 70px;
     margin: 0 auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: stretch;
-
 }
 
-.containner-header > div::before{
-    content:'';
+.containner-header>div::before {
+    content: '';
     width: 15px;
     height: 100%;
     position: absolute;
     left: 0;
-    background-color:#BABABA;
+    background-color: #BABABA;
     border-bottom-right-radius: 100% 30%;
 }
 
-.containner-header > div::after{
-    content:'';
+.containner-header>div::after {
+    content: '';
     width: 15px;
     height: 100%;
     position: absolute;
     right: 0;
-    background-color:#BABABA;
-    border-bottom-left-radius:  100% 30%;
+    background-color: #BABABA;
+    border-bottom-left-radius: 100% 30%;
 }
 
 .bg-light {
@@ -58,14 +62,13 @@ header {
     background-color: var(--bg-light);
     padding-left: 20px;
     padding-right: 20px;
-    position:relative;
+    position: relative;
 }
-
 
 .small-text {
     display: block;
     color: hsl(0, 0%, 40%);
-    margin-top: 5px;
+    margin-top: .25em;
     font-size: 0.7em;
     letter-spacing: 1px;
 }
@@ -85,27 +88,25 @@ header {
     flex-wrap: wrap;
 }
 
-.options {
-    flex: 0 1 auto;
-}
-
 .button {
+    width: 100%;
+    height: 100%;
     padding: 1rem 1.5rem;
-    border: solid 1.5px white;
-    border-radius: 0.25rem;
-    background-color: var(--bg-dark);
-    margin: 0 .5rem;
     text-transform: uppercase;
-    font-weight: bold;
-    color: hsl(0, 0%, 40%);
-    letter-spacing:1px;
+    color: black;
+    letter-spacing: 1px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    background-color: transparent;
+    font-family: 'Orbitron', sans-serif;
 }
 
 .containner {
     max-width: 1080px;
+    min-width: 420px;
     margin: 0 auto;
     padding: 1%;
-    background-color: lightgray;
     min-height: 90vh;
     display: grid;
     place-items: center;
@@ -113,9 +114,10 @@ header {
 
 .grid {
     display: grid;
-    gap: 1.5px;
+    gap: calc(1.5* (clamp(420px, 100vw, 1080px) / 1080));
     width: 100%;
     justify-content: center;
+    font-size: calc(16* (clamp(420px, 100vw, 1080px) / 1080));
 }
 
 .item {
@@ -181,7 +183,6 @@ header {
     content: "\1f4a3";
 }
 
-.timer {
+#timer {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.3rem
 }

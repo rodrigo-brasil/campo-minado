@@ -63,8 +63,8 @@ function startTimer() {
 
 function stopTimer() {
   clearInterval(stopWatch);
-  currentTime = 0;
-  timerElement.innerHTML = '00:00:00';
+/*   currentTime = 0;
+  timerElement.innerHTML = '00:00:00'; */
   isStartedGame = false;
 }
 
@@ -77,7 +77,7 @@ function timer() {
     hours = Math.trunc(min / 60);
     min = currentTime % 60;
   }
-  timerElement.innerHTML = (hours < 10 ? `0${hours}:` : hours) + (min < 10 ? `0${min}:` : min) + (sec < 10 ? `0${sec}` : sec)
+  timerElement.innerHTML =  hours+":" + (min < 10 ? `0${min}` : min)+":" + (sec < 10 ? `0${sec}` : sec)
 }
 
 /* functions for update HTML */
@@ -91,7 +91,7 @@ function renderField(board) {
         "x" + i + " " + "y" + j + " item " + getClassFromCamp(board[i][j]);
     }
   }
-  let template_columns = "grid-template-columns: repeat(" + board[1].length + ",minmax(20px, 45px));";
+  let template_columns = "grid-template-columns: repeat(" + board[1].length + ",minmax(10px, 45px));";
   minefield.setAttribute("style", template_columns);
 }
 
@@ -193,7 +193,7 @@ function markCamp(element) {
 function openCamp(camp) {
   if (camp.bomb) {
     changeClass(states.BOMB, camp);
-    alert("Perdeu!");
+    gameOver()
     return
   }
   if (calcAdjBombs(camp) > 0) {
@@ -213,13 +213,15 @@ function openCamp(camp) {
 }
 
 //game over
-function gameOver(square) {
-  result.innerHTML = 'BOOM! Game Over!'
-  stopTimer()
+function gameOver() {
+  //result.innerHTML = 'BOOM! Game Over!'
+  alert("Perdeu!");
+  stopTimer();
+  abrirtudo();
 }
 
 function abrirtudo() {
-  board.forEach(linha => linha.forEach(camp => camp.hasGoalAchieved() || (camp.open = true)))
+  board.forEach(linha => linha.forEach(camp => !camp.bomb || (camp.open = true)))
   renderField(board)
 }
 
