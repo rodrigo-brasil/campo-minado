@@ -10,13 +10,6 @@ const height = window.innerHeight
   || document.documentElement.clientHeight
   || document.body.clientHeight;
 
-const states = {
-  MARKED: "marked",
-  BOMB: "bomb",
-  OPEN: "open",
-  CLOSE: "close",
-};
-
 /* Create camp  class*/
 class Camp {
   constructor(row, col) {
@@ -52,10 +45,12 @@ const hardBtn = document.querySelector("#hard-option");
 const bombs_left = document.querySelector("#bombs-left");
 const timerElement = document.querySelector("#timer");
 
+/* reference for overlays display */
+const overlays = Array.from(document.getElementsByClassName('overlay-text'));
+
 /* setInterval */
 function startTimer() {
   if (isStartedGame) return
-  console.log("startandoNovo")
   currentTime = 0;
   stopWatch = setInterval(timer, 1000);
   isStartedGame = true;
@@ -63,22 +58,28 @@ function startTimer() {
 
 function stopTimer() {
   clearInterval(stopWatch);
-/*   currentTime = 0;
-  timerElement.innerHTML = '00:00:00'; */
+  /*   currentTime = 0;
+    timerElement.innerHTML = '00:00:00'; */
   isStartedGame = false;
 }
 
 function timer() {
   currentTime++;
+  timerElement.innerHTML = getFormatedTime();
+}
+
+const getFormatedTime = () => {
   let min = Math.trunc(currentTime / 60);
   let sec = currentTime % 60;
   let hours = 0;
   if (min >= 60) {
     hours = Math.trunc(min / 60);
     min = currentTime % 60;
+    return [hours, min, sec].map(unit => unit < 10 ? `0${unit}` : unit).join(':');
   }
-  timerElement.innerHTML =  hours+":" + (min < 10 ? `0${min}` : min)+":" + (sec < 10 ? `0${sec}` : sec)
-}
+  else
+    return [min, sec].map(unit => unit < 10 ? `0${unit}` : unit).join(':');
+};
 
 /* functions for update HTML */
 function renderField(board) {
@@ -95,38 +96,31 @@ function renderField(board) {
   minefield.setAttribute("style", template_columns);
 }
 
-function changeClass(evento, camp) {
-  elements = document.getElementsByClassName("x" + camp.row + " " + "y" + camp.col)
+function changeClass(camp) {
+  elements = document.getElementsByClassName("x" + camp.row + " " + "y" + camp.col) //todo: pass class to id
   element = elements[0]
-  switch (evento) {
-    case states.MARKED:
-      camp.marked == true
-        ? element.classList.replace("close", "marked")
-        : element.classList.replace("marked", "close");
-      break;
-    case states.BOMB:
+
+  if (!camp.open) {
+    (camp.marked == true)
+      ? element.classList.replace("close", "marked")
+      : element.classList.replace("marked", "close");
+  } else
+    if (camp.bomb) {
       element.classList.replace("close", "bomb");
-      abrirtudo();
-      break;
-    case states.OPEN:
+    } else {
       element.classList.replace("close", "open");
       element.innerText = calcAdjBombs(camp) == 0 ? "" : calcAdjBombs(camp)
-      break;
-    default:
-      element.classList.replace("close", "open");
-      console.log("default")
-      break;
-  }
+    }
 }
 
 function getClassFromCamp(camp) {
   if (!camp.open) {
-    if (camp.marked) return states.MARKED;
-    return states.CLOSE;
+    if (camp.marked) return "marked";
+    return "close";
   }
   if (camp.open) {
-    if (camp.bomb) return states.BOMB;
-    return states.OPEN;
+    if (camp.bomb) return "bomb";
+    return "open";
   }
   console.erro("Erro com as classes")
   return "";
@@ -185,39 +179,37 @@ function markCamp(element) {
   const camp = findCampPosition(element)
   if (camp != null && camp instanceof Camp) {
     camp.flag();
-    changeClass(states.MARKED, camp);
+    changeClass(camp);
     UpdateBombsCount()
   }
 }
 
 function openCamp(camp) {
+  camp.open = true;
+
   if (camp.bomb) {
-    changeClass(states.BOMB, camp);
+    changeClass(camp);
     gameOver()
-    return
   }
-  if (calcAdjBombs(camp) > 0) {
-    camp.open = true;
-    changeClass(states.OPEN, camp);
+  else {
+    changeClass(camp);
+    if (calcAdjBombs(camp) == 0) {
+      getAdjCamps(camp)
+        .filter((x) => !x.open && !x.marked)
+        .forEach((x) => openCamp(x));
+    }
   }
-  if (calcAdjBombs(camp) == 0) {
-    camp.open = true;
-    changeClass(states.OPEN, camp);
-    getAdjCamps(camp)
-      .filter((x) => !x.open && !x.marked)
-      .forEach((x) => openCamp(x));
-  }
+
   if (isWin()) {
-    alert("Ganhou!")
+    document.getElementById('win-text').classList.add('visible');
   }
 }
 
 //game over
 function gameOver() {
-  //result.innerHTML = 'BOOM! Game Over!'
-  alert("Perdeu!");
   stopTimer();
   abrirtudo();
+  document.getElementById('game-over-text').classList.add('visible');
 }
 
 function abrirtudo() {
@@ -275,6 +267,13 @@ document.body.addEventListener("contextmenu", (e) => {
 document.body.addEventListener("click", (e) => {
   e.target?.classList?.contains("close") && startTimer();
   e.target?.classList?.contains("close") && openCamp(findCampPosition(e.target));
+});
+
+overlays.forEach(overlay => {
+  overlay.addEventListener('click', () => {
+    overlay.classList.remove('visible');
+    init();
+  });
 });
 
 //initialize

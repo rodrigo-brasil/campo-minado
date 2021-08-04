@@ -60,9 +60,16 @@ header {
 .bg-light {
     flex: 0 1 150px;
     background-color: var(--bg-light);
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
     position: relative;
+}
+.bg-light > *{
+    padding-top: .3rem;
+
+}
+.bg-light > *:last-child {
+    padding-bottom: .3rem;
 }
 
 .small-text {
@@ -91,7 +98,6 @@ header {
 .button {
     width: 100%;
     height: 100%;
-    padding: 1rem 1.5rem;
     text-transform: uppercase;
     color: black;
     letter-spacing: 1px;
@@ -183,6 +189,37 @@ header {
     content: "\1f4a3";
 }
 
-#timer {
-    font-family: 'Orbitron', sans-serif;
-}
+.overlay-text {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #FF6D00;
+    transition: background-color 500ms, font-size 500ms;
+  }
+  
+  .overlay-text-small {
+    font-size: .3em;
+  }
+  
+  .overlay-text.visible {
+    display: flex;
+    animation: overlay-grow 500ms forwards;
+  }
+
+  @keyframes overlay-grow {
+    from {
+      background-color: rgba(0, 0, 0, 0);
+      font-size: 0;
+    }
+    to {
+      background-color: rgba(0, 0, 0, .8);
+      font-size: 10em;
+    }
+  }
